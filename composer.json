@@ -1,0 +1,17 @@
+{
+    "name": "dunn/dunn-server",
+    "autoload": {
+        "psr-4": {
+            "DunnServer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "dunn",
+            "email": "corepper03@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.2.10"
+    }
+}
