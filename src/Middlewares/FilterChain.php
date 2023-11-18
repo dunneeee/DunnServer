@@ -32,6 +32,21 @@ class FilterChain implements DoFilter
     }
   }
 
+  /**
+   * @param \DunnServer\Middlewares\Filter[] $filter
+   */
+  function push(...$filters)
+  {
+    $this->filters->push(...$filters);
+    return $this;
+  }
+
+  function unshift(...$filters)
+  {
+    $this->filters->unshift(...$filters);
+    return $this;
+  }
+
   function isCompleted()
   {
     return $this->index > $this->filters->length();

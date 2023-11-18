@@ -6,7 +6,7 @@ namespace DunnServer\Utils;
 /**
  * @template T
  */
-class DunnArray
+class DunnArray implements \JsonSerializable
 {
   /**
    * @var array<T>
@@ -21,7 +21,7 @@ class DunnArray
   }
 
   /**
-   * @return T
+   * @return T | null
    */
   function get(int $index)
   {
@@ -89,6 +89,7 @@ class DunnArray
     for ($i = 0; $i < count($this->array); $i++) {
       $func($this->array[$i], $i, $this->array);
     }
+    return $this;
   }
 
   /**
@@ -97,6 +98,29 @@ class DunnArray
   function filter(callable $func)
   {
     return array_filter($this->array, $func);
+  }
+
+  /**
+   * @return T | null
+   */
+  function find(callable $func)
+  {
+    return array_filter($this->array, $func)[0] ?? null;
+  }
+
+  /**
+   * @return int
+   */
+  function findIndex(callable $func)
+  {
+    $index = -1;
+    for ($i = 0; $i < count($this->array); $i++) {
+      if ($func($this->array[$i], $i, $this->array)) {
+        $index = $i;
+        break;
+      }
+    }
+    return $index;
   }
 
   /**
@@ -126,5 +150,10 @@ class DunnArray
   function merge($array)
   {
     return array_merge($this->array, $array->toArray());
+  }
+
+  function jsonSerialize(): mixed
+  {
+    return $this->array;
   }
 }

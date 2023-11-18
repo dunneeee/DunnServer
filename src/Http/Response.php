@@ -4,6 +4,17 @@ namespace DunnServer\Http;
 
 class Response
 {
+
+  /**
+   * @var \DunnServer\MVC\View
+   */
+  protected $view;
+
+  function __construct()
+  {
+    $this->view = new \DunnServer\MVC\View();
+  }
+
   /**
    * @param int $code
    */
@@ -53,13 +64,12 @@ class Response
 
   function send($data)
   {
-    $json = json_encode($data);
-
-    if ($json) {
-      $this->contentType('application/json');
-      echo $json;
-    } else {
+    if (is_object($data) || is_array($data)) {
+      $this->json($data);
+    } else if (is_string($data)) {
       $this->html($data);
+    } else {
+      $this->text($data);
     }
   }
 
@@ -74,5 +84,25 @@ class Response
     if ($isExit) {
       exit;
     }
+  }
+
+  /**
+   * @param string | null $view
+   */
+  function getView($view = null)
+  {
+    if ($view) {
+      $this->view->setName($view);
+    }
+    return $this->view;
+  }
+
+  /**
+   * @param \DunnServer\MVC\View $newView
+   */
+  function setView($newView)
+  {
+    $this->view = $newView;
+    return $this;
   }
 }

@@ -5,7 +5,7 @@ namespace DunnServer\Utils;
 /**
  * @template T
  */
-class DunnMap
+class DunnMap implements \JsonSerializable
 {
   /**
    * @var array<string, T>
@@ -47,6 +47,7 @@ class DunnMap
   function set($key, $value)
   {
     $this->map[$key] = $value;
+    return $this;
   }
 
   /**
@@ -62,11 +63,13 @@ class DunnMap
   function remove($key)
   {
     unset($this->map[$key]);
+    return $this;
   }
 
   function clear()
   {
     $this->map = [];
+    return $this;
   }
 
   /**
@@ -75,6 +78,19 @@ class DunnMap
   function merge($map)
   {
     $this->map = array_merge($this->map, $map->toArray());
+    return $this;
   }
+
+  function jsonSerialize(): mixed
+  {
+    return $this->map;
+  }
+
+  function length()
+  {
+    return count($this->map);
+    return $this;
+  }
+
 
 }

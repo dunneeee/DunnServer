@@ -17,12 +17,32 @@ class Route
   protected $params;
 
   /**
-   * @param string $pattern
+   * @var \DunnServer\Router\RouteStore
    */
-  function __construct($pattern)
+  protected $store;
+
+  /**
+   * @param string $pattern
+   * @param \DunnServer\Router\RouteStore $store
+   */
+  function __construct($pattern, $store)
   {
     $this->pattern = $pattern;
     $this->params = new DunnMap();
+    $this->store = $store;
+  }
+
+  function getStore()
+  {
+    return $this->store;
+  }
+
+  /**
+   * @param \DunnServer\Router\RouteStore $store
+   */
+  function setStore($store)
+  {
+    $this->store = $store;
   }
 
   function getParams()
