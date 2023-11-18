@@ -89,7 +89,6 @@ class DunnMap implements \JsonSerializable
   function length()
   {
     return count($this->map);
-    return $this;
   }
 
 

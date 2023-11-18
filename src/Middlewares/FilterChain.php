@@ -56,4 +56,9 @@ class FilterChain implements DoFilter
   {
     return $this->index === $this->filters->length();
   }
+
+  function getFilters()
+  {
+    return $this->filters;
+  }
 }

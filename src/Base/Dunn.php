@@ -102,4 +102,20 @@ class Dunn
     return $this;
   }
 
+  /**
+   * @param \DunnServer\Router\Router $router
+   */
+  function useRouter($router)
+  {
+    $routes = $router->getRoutes();
+    $routes->forEach(function (Route $route) use ($router) {
+      $pattern = $router->getPattern() . $route->getPattern();
+      $this->addRoute($pattern, $route->getStore()->getController());
+      $this->addFilter($pattern, ...$route->getStore()->getFilterChain()->getFilters()->toArray());
+    });
+    return $this;
+  }
+
+
+
 }
