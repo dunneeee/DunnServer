@@ -16,10 +16,16 @@ class Request
    */
   protected $params;
 
+  /**
+   * @var FileUpload
+   */
+  protected $uploads;
+
   function __construct()
   {
     $this->query = new DunnMap($_GET);
     $this->params = new DunnMap();
+    $this->uploads = new FileUpload();
   }
 
   function server($key = null, $default = null)
@@ -99,5 +105,10 @@ class Request
   function setParams($key, $value)
   {
     $this->params->set($key, $value);
+  }
+
+  function getUploads()
+  {
+    return $this->uploads;
   }
 }

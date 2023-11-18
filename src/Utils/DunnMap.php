@@ -91,5 +91,20 @@ class DunnMap implements \JsonSerializable
     return count($this->map);
   }
 
+  /**
+   * @param array<string, T> $map
+   */
+  function setMap($map)
+  {
+    $this->map = $map;
+    return $this;
+  }
 
+  /**
+   * @param DunnMap $map
+   */
+  static function clone ($map)
+  {
+    return new DunnMap($map->toArray());
+  }
 }
