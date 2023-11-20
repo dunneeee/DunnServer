@@ -5,6 +5,7 @@
             "DunnServer\\": "src/"
         }
     },
+    "license": "MIT",
     "authors": [
         {
             "name": "dunn",
