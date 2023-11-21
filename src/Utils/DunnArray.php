@@ -56,7 +56,7 @@ class DunnArray implements \JsonSerializable
    */
   function splice(int $index, ...$value)
   {
-    return array_splice($this->array, $index, 0, $value);
+    return new DunnArray(...array_splice($this->array, $index, 0, $value));
   }
 
   function join(string $glue)
@@ -76,7 +76,7 @@ class DunnArray implements \JsonSerializable
 
   function map(callable $func)
   {
-    return array_map($func, $this->array);
+    return new DunnArray(...array_map($func, $this->array));
   }
 
   function reduce(callable $func, $initial = null)
@@ -87,17 +87,19 @@ class DunnArray implements \JsonSerializable
   function forEach (callable $func)
   {
     for ($i = 0; $i < count($this->array); $i++) {
-      $func($this->array[$i], $i, $this->array);
+      /**
+       * @var T
+       * @var int $i
+       * @var DunnArray<T> $this
+       */
+      $func($this->array[$i], $i, $this);
     }
     return $this;
   }
 
-  /**
-   * @return array<T>
-   */
   function filter(callable $func)
   {
-    return array_filter($this->array, $func);
+    return new DunnArray(...array_filter($this->array, $func));
   }
 
   /**
@@ -115,6 +117,11 @@ class DunnArray implements \JsonSerializable
   {
     $index = -1;
     for ($i = 0; $i < count($this->array); $i++) {
+      /**
+       * @var T
+       * @var int $i
+       * @var DunnArray<T> $this
+       */
       if ($func($this->array[$i], $i, $this->array)) {
         $index = $i;
         break;
@@ -149,7 +156,7 @@ class DunnArray implements \JsonSerializable
    */
   function merge($array)
   {
-    return array_merge($this->array, $array->toArray());
+    return new DunnArray(...array_merge($this->array, $array->toArray()));
   }
 
   function jsonSerialize(): mixed

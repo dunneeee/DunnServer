@@ -8,6 +8,7 @@ class DunnServer extends Dunn
 {
   function run()
   {
+    $this->loadFilter();
     $req = $this->req;
     $res = $this->res;
     $uri = $req->getUri();

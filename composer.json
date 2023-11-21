@@ -15,5 +15,9 @@
     "require": {
         "php": ">=8.2.0"
     },
+    "scripts": {
+        "test:test": "php test/test.php",
+        "test": "php -S localhost:8080 -t test/"
+    },
     "minimum-stability": "stable"
 }

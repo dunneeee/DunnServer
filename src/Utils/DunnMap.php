@@ -25,19 +25,19 @@ class DunnMap implements \JsonSerializable
   }
 
   /**
-   * @return array<string>
+   * @return DunnArray<string>
    */
   function keys()
   {
-    return array_keys($this->map);
+    return new DunnArray(...array_keys($this->map));
   }
 
   /**
-   * @return array<T>
+   * @return DunnArray<T>
    */
   function values()
   {
-    return array_values($this->map);
+    return new DunnArray(...array_values($this->map));
   }
 
   /**

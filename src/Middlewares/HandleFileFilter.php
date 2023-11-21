@@ -19,7 +19,7 @@ class HandleFileFilter implements Filter
   {
     $req->setParams('_uploadRoot', $this->dir);
     $upload = $req->getUploads();
-    $keys = $upload->keys();
+    $keys = $upload->keys()->toArray();
     foreach ($keys as $key) {
       $files = $upload->get($key);
       if ($files) {

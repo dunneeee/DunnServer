@@ -7,6 +7,7 @@ use DunnServer\Http\Response;
 use DunnServer\Router\Route;
 use DunnServer\Router\RouteStore;
 use DunnServer\Utils\DunnArray;
+use DunnServer\Utils\DunnMap;
 
 class Dunn
 {
@@ -25,11 +26,17 @@ class Dunn
    */
   protected $res;
 
+  /**
+   * @var \DunnServer\Utils\DunnMap<\DunnServer\Utils\DunnArray<\DunnServer\Middlewares\Filter>>
+   */
+  protected $filters;
+
   function __construct()
   {
     $this->routes = new DunnArray();
     $this->req = new Request();
     $this->res = new Response();
+    $this->filters = new DunnMap();
   }
 
   /**
@@ -53,22 +60,38 @@ class Dunn
 
   /**
    * @param string $pattern
-   * @param \DunnServer\Middlewares\Filter $filter;
+   * @param \DunnServer\Middlewares\Filter $filters;
    */
-  function addFilter($pattern, ...$filters)
+  protected function loadFilter()
   {
-    $this->routes->forEach(function (Route $route) use ($pattern, $filters) {
-      $isAll = str_ends_with($pattern, '/*');
-      $isMatch = $isAll ? str_starts_with($route->getPattern(), substr($pattern, 0, -2)) : $route->getPattern() == $pattern;
-      if ($isMatch) {
-        if ($isAll) {
-          $route->getStore()->getFilterChain()->unshift(...$filters);
-        } else {
-          $route->getStore()->getFilterChain()->push(...$filters);
-        }
+    $patterns = $this->filters->keys();
+    $patterns->forEach(function ($pattern) {
+      $filters = $this->filters->get($pattern);
+      if ($filters) {
+        $this->routes->forEach(function (Route $route) use ($pattern, $filters) {
+          $isAll = str_ends_with($pattern, '/*');
+          $isMatch = $isAll ? str_starts_with($route->getPattern(), substr($pattern, 0, -2)) : $route->getPattern() == $pattern;
+          if ($isMatch) {
+            if ($isAll) {
+              $route->getStore()->getFilterChain()->unshift(...$filters->toArray());
+            } else {
+              $route->getStore()->getFilterChain()->push(...$filters->toArray());
+            }
+          }
+        });
       }
     });
     return $this;
+  }
+
+  /**
+   * @param string $pattern
+   * @param \DunnServer\Middlewares\Filter $filters;
+   */
+  function addFilter($pattern, ...$filters)
+  {
+    $arr = new DunnArray(...$filters);
+    $this->filters->set($pattern, $arr);
   }
 
   function getRoute($pattern)
