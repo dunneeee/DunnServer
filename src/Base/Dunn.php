@@ -94,6 +94,11 @@ class Dunn
     $this->filters->set($pattern, $arr);
   }
 
+  function getFilters()
+  {
+    return $this->filters;
+  }
+
   function getRoute($pattern)
   {
     $index = $this->routes->findIndex(function (Route $route) use ($pattern) {
@@ -130,6 +135,7 @@ class Dunn
    */
   function useRouter($router)
   {
+    $router->loadFilter();
     $routes = $router->getRoutes();
     $routes->forEach(function (Route $route) use ($router) {
       $pattern = $router->getPattern() . $route->getPattern();
