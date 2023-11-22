@@ -4,6 +4,8 @@ namespace DunnServer\Base;
 
 use DunnServer\Http\Request;
 use DunnServer\Http\Response;
+use DunnServer\Middlewares\Filter;
+use DunnServer\MVC\Controller;
 use DunnServer\Router\Route;
 use DunnServer\Router\RouteStore;
 use DunnServer\Utils\DunnArray;
@@ -45,17 +47,22 @@ class Dunn
    */
   function addRoute($pattern, $controller)
   {
-    $index = $this->routes->findIndex(function ($route) use ($pattern) {
-      return $route->getPattern() === $pattern;
-    });
+    if ($controller instanceof Controller) {
+      if (str_ends_with($pattern, '/'))
+        $pattern = substr($pattern, 0, strlen($pattern) - 1);
+      $index = $this->routes->findIndex(function ($route) use ($pattern) {
+        return $route->getPattern() === $pattern;
+      });
 
-    if ($index != -1) {
-      $this->routes->get($index)->setStore(new RouteStore($controller));
-    } else {
-      $route = new Route($pattern, new RouteStore($controller));
-      $this->routes->push($route);
-    }
-    return $this;
+      if ($index != -1) {
+        $this->routes->get($index)->setStore(new RouteStore($controller));
+      } else {
+        $route = new Route($pattern, new RouteStore($controller));
+        $this->routes->push($route);
+      }
+      return $this;
+    } else
+      throw new \Exception('The second params is class extends class `Controller`');
   }
 
   /**
@@ -91,6 +98,9 @@ class Dunn
   function addFilter($pattern, ...$filters)
   {
     $arr = new DunnArray(...$filters);
+    $arr = $arr->filter(function ($filter) {
+      return $filter instanceof Filter;
+    });
     $this->filters->set($pattern, $arr);
   }
 
@@ -144,7 +154,5 @@ class Dunn
     });
     return $this;
   }
-
-
 
 }
