@@ -48,7 +48,7 @@ class Dunn
   function addRoute($pattern, $controller)
   {
     if ($controller instanceof Controller) {
-      if (str_ends_with($pattern, '/'))
+      if (strlen($pattern) > 1 && str_ends_with($pattern, '/'))
         $pattern = substr($pattern, 0, strlen($pattern) - 1);
       $index = $this->routes->findIndex(function ($route) use ($pattern) {
         return $route->getPattern() === $pattern;
