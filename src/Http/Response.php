@@ -105,4 +105,9 @@ class Response
     $this->view = $newView;
     return $this;
   }
+
+  function setSession($key, $value)
+  {
+    $_SESSION[$key] = $value;
+  }
 }

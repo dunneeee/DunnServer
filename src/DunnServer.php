@@ -23,4 +23,14 @@ class DunnServer extends Dunn
       }
     }
   }
+
+  function startSession()
+  {
+    session_start();
+  }
+
+  function destroySession()
+  {
+    session_destroy();
+  }
 }

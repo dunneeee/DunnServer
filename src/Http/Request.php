@@ -111,4 +111,11 @@ class Request
   {
     return $this->uploads;
   }
+
+  function getSession($key = null)
+  {
+    $session = new DunnMap($_SESSION);
+
+    return $key ? $session->get($key) : $session;
+  }
 }
