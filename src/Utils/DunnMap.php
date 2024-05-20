@@ -53,7 +53,7 @@ class DunnMap implements \JsonSerializable
   /**
    * @param string $key
    * @param T $default
-   * @return T | null
+   * @return T
    */
   function get($key, $default = null)
   {
