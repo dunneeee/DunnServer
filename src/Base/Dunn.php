@@ -10,6 +10,7 @@ use DunnServer\Router\Route;
 use DunnServer\Router\RouteStore;
 use DunnServer\Utils\DunnArray;
 use DunnServer\Utils\DunnMap;
+use ReflectionClass;
 
 class Dunn
 {
@@ -139,6 +140,31 @@ class Dunn
     $this->res->getView()->setDir($dir);
     return $this;
   }
+
+  function initializeControllers($baseNamespace, $controllersPath) {
+     
+    if (!is_dir($controllersPath) || !is_readable($controllersPath)) {
+      return false;
+  }
+
+  $controllerFiles = glob($controllersPath . '/*.php');
+
+  foreach ($controllerFiles as $file) {
+      $className = basename($file, '.php');
+
+      $fullClassName = $baseNamespace . '\\' . $className;
+
+      if (class_exists($fullClassName)) {
+          /**
+           * @var ReflectionClass<\DunnServer\MVC\Controller>
+           */
+          $reflectionClass = new ReflectionClass($fullClassName);
+          $instance = $reflectionClass->newInstance($this);
+          $instance->init($this);
+      }
+    }
+  }
+
 
   /**
    * @param \DunnServer\Router\Router $router

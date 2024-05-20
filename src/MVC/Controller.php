@@ -4,8 +4,15 @@ namespace DunnServer\MVC;
 
 use DunnServer\Http\HttpAction;
 
-class Controller implements HttpAction, ControllerAction
+abstract class Controller implements HttpAction, ControllerAction
 {
+  /**
+   * @param \DunnServer\Server $server
+   */
+  function init($server) {
+    
+  }
+
   function doGet($req, $res)
   {
   }
