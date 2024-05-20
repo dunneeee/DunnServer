@@ -2,12 +2,13 @@
 
 namespace DunnServer\MVC;
 
+use DunnServer\Base\Dunn;
 use DunnServer\Http\HttpAction;
 
 abstract class Controller implements HttpAction, ControllerAction
 {
   /**
-   * @param \DunnServer\Server $server
+   * @param Dunn $server
    */
   function init($server) {
     
