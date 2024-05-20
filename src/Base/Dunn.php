@@ -159,7 +159,7 @@ class Dunn
            * @var ReflectionClass<\DunnServer\MVC\Controller>
            */
           $reflectionClass = new ReflectionClass($fullClassName);
-          $instance = $reflectionClass->newInstance($this);
+          $instance = $reflectionClass->newInstance();
           $instance->init($this);
       }
     }
