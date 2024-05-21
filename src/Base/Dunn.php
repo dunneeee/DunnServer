@@ -7,6 +7,7 @@ use DunnServer\Http\Response;
 use DunnServer\Middlewares\Filter;
 use DunnServer\MVC\Controller;
 use DunnServer\Router\Route;
+use DunnServer\Router\Router;
 use DunnServer\Router\RouteStore;
 use DunnServer\Utils\DunnArray;
 use DunnServer\Utils\DunnMap;
@@ -164,7 +165,6 @@ class Dunn
       }
     }
   }
-
 
   /**
    * @param \DunnServer\Router\Router $router
